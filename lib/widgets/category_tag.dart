@@ -17,6 +17,7 @@ class CategoryTag extends StatelessWidget {
         return Colors.grey;
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
