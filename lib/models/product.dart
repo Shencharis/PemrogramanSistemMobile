@@ -1,10 +1,10 @@
-// Variabel & tipe data produk
 const String namaToko = 'TokoKita';
 const List<String> daftarKategori = ['Elektronik', 'Fashion', 'Makanan'];
 
 void demoVariabel() {
   var namaProduk = 'Kaos Polos Cotton';
   namaProduk = 'Kaos Polos Cotton Combed 30s';
+
   print('var namaProduk        : $namaProduk');
 
   final DateTime waktuDibuat = DateTime.now();
@@ -33,12 +33,12 @@ void demoVariabel() {
     'stock': stok,
     'available': tersedia,
   };
+
   print('Map produkMentah      : $produkMentah');
   print('Akses Map (name)      : ${produkMentah['name']}');
   print('\n');
 }
 
-//Perhitungan harga dengan operator
 void demoOperator() {
   double hargaA = 75000;
   double hargaB = 125000;
@@ -63,13 +63,13 @@ void demoOperator() {
   print('\n-- Logika --');
   bool layakTampil = stokA > 0 && hargaA > 0;
   bool perluRestock = stokA < 5 || !(stokA > 0);
+
   print('Layak ditampilkan (stok>0 && harga>0) : $layakTampil');
   print('Perlu restock (stok<5 || stok habis)  : $perluRestock');
   print('Negasi (!layakTampil)                 : ${!layakTampil}');
   print('\n');
 }
 
-//Status stok & diskon (if-else/switch)
 String labelStatusStok(int stok) {
   if (stok <= 0) {
     return 'Habis';
@@ -95,36 +95,46 @@ double diskonKategori(String kategori) {
 
 void demoControlFlow() {
   print('-- if-else: status stok --');
+
   for (int s in [0, 3, 20]) {
     print('Stok $s\t-> ${labelStatusStok(s)}');
   }
 
   print('\n-- for: total belanja --');
+
   List<double> hargaKeranjang = [75000, 125000, 32000, 18500];
+
   double total = 0;
+
   for (int i = 0; i < hargaKeranjang.length; i++) {
     total += hargaKeranjang[i];
+
     print('Item ke-${i + 1} : ${hargaKeranjang[i]} | subtotal: $total');
   }
+
   print('TOTAL BELANJA : $total');
 
   print('\n-- while: simulasi stok berkurang --');
+
   int stok = 5;
+
   while (stok > 0) {
     print(
-      'Terjual 1 unit, sisa stok: ${stok - 1} (${labelStatusStok(stok - 1)})',
+      'Terjual 1 unit, sisa stok: ${stok - 1} '
+      '(${labelStatusStok(stok - 1)})',
     );
     stok--;
   }
 
   print('\n-- switch-case: diskon per kategori --');
+
   for (String k in daftarKategori) {
     print('$k\t-> diskon ${diskonKategori(k)}%');
   }
+
   print('\n');
 }
 
-//Function hitungHargaSetelahDiskon
 double hitungHargaSetelahDiskon(double harga, {double persenDiskon = 0}) {
   double potongan = harga * (persenDiskon / 100);
   return harga - potongan;
@@ -136,11 +146,16 @@ String _pisahRibuan(double angka) {
   String s = angka.toStringAsFixed(0);
   String hasil = '';
   int hitung = 0;
+
   for (int i = s.length - 1; i >= 0; i--) {
     hasil = s[i] + hasil;
     hitung++;
-    if (hitung % 3 == 0 && i != 0) hasil = '.$hasil';
+
+    if (hitung % 3 == 0 && i != 0) {
+      hasil = '.$hasil';
+    }
   }
+
   return hasil;
 }
 
@@ -149,22 +164,34 @@ bool isLayakTampil(Product p) => p.stock > 0 && p.price > 0;
 void demoFunction() {
   double harga = 200000;
 
-  print('Harga awal                       : ${formatRupiah(harga)}');
   print(
-    'Tanpa argumen diskon (default 0) : ${formatRupiah(hitungHargaSetelahDiskon(harga))}',
+    'Harga awal                       : '
+    '${formatRupiah(harga)}',
   );
+
   print(
-    'Diskon 15%  (named parameter)    : ${formatRupiah(hitungHargaSetelahDiskon(harga, persenDiskon: 15))}',
+    'Tanpa argumen diskon (default 0) : '
+    '${formatRupiah(hitungHargaSetelahDiskon(harga))}',
   );
+
+  print(
+    'Diskon 15%  (named parameter)    : '
+    '${formatRupiah(hitungHargaSetelahDiskon(harga, persenDiskon: 15))}',
+  );
+
   print(
     'Diskon sesuai kategori Elektronik: '
-    '${formatRupiah(hitungHargaSetelahDiskon(harga, persenDiskon: diskonKategori("Elektronik")))}',
+    '${formatRupiah(hitungHargaSetelahDiskon(harga, persenDiskon: diskonKategori('Elektronik')))}',
   );
-  print('Arrow function formatRupiah      : ${formatRupiah(1250000)}');
+
+  print(
+    'Arrow function formatRupiah      : '
+    '${formatRupiah(1250000)}',
+  );
+
   print('\n');
 }
 
-// Class Product & DiscountedProduct
 class Product {
   final String id;
   final String name;
@@ -185,8 +212,11 @@ class Product {
   });
 
   String getStatusStok() => labelStatusStok(stock);
+
   String get hargaFormatted => formatRupiah(price);
+
   double get persenDiskonKategori => diskonKategori(category);
+
   String get deskripsiAman => description ?? '(Belum ada deskripsi)';
 
   void kurangiStok(int jumlah) {
@@ -196,8 +226,10 @@ class Product {
       print('Gagal: stok $name hanya tersisa $stock.');
     } else {
       stock -= jumlah;
+
       print(
-        '$name terjual $jumlah unit. Sisa stok: $stock (${getStatusStok()})',
+        '$name terjual $jumlah unit. '
+        'Sisa stok: $stock (${getStatusStok()})',
       );
     }
   }
@@ -230,12 +262,14 @@ class DiscountedProduct extends Product {
 
   double hargaFinal() =>
       hitungHargaSetelahDiskon(price, persenDiskon: discountPercent);
+
   double get besarPotongan => price - hargaFinal();
 
   @override
   String tampilkanInfo() {
     return '${super.tampilkanInfo()}\n'
-        '   Diskon      : $discountPercent% (hemat ${formatRupiah(besarPotongan)})\n'
+        '   Diskon      : $discountPercent% '
+        '(hemat ${formatRupiah(besarPotongan)})\n'
         '   Harga Akhir : ${formatRupiah(hargaFinal())}';
   }
 }
@@ -263,7 +297,9 @@ void demoClass() {
   print(p1.tampilkanInfo());
   print('');
   print(p2.tampilkanInfo());
+
   print('description p2 (mentah) : ${p2.description}');
+
   print('');
 
   final p3 = DiscountedProduct(
@@ -276,19 +312,21 @@ void demoClass() {
     description: 'Headset gaming dengan lampu RGB dan mikrofon lepas-pasang.',
     discountPercent: 20,
   );
+
   print(p3.tampilkanInfo());
   print('p3 adalah Product?  ${p3 is Product}');
   print('');
 
   print('-- Simulasi transaksi --');
+
   p2.kurangiStok(2);
   p2.kurangiStok(5);
+
   print('\n');
 }
 
-//daftar produk
 final List<Product> daftarProduk = [
-  Product(
+  DiscountedProduct(
     id: 'P001',
     name: 'Kaos Polos Combed 30s',
     price: 75000,
@@ -296,7 +334,9 @@ final List<Product> daftarProduk = [
     category: 'Fashion',
     stock: 12,
     description: 'Kaos katun combed 30s, adem dan nyaman dipakai harian.',
+    discountPercent: 20,
   ),
+
   Product(
     id: 'P002',
     name: 'Mouse Wireless 2.4GHz',
@@ -305,6 +345,7 @@ final List<Product> daftarProduk = [
     category: 'Elektronik',
     stock: 3,
   ),
+
   Product(
     id: 'P003',
     name: 'Headset Gaming RGB',
@@ -314,6 +355,7 @@ final List<Product> daftarProduk = [
     stock: 7,
     description: 'Headset gaming dengan lampu RGB dan mikrofon lepas-pasang.',
   ),
+
   Product(
     id: 'P004',
     name: 'Keyboard Mekanik TKL',
@@ -323,6 +365,7 @@ final List<Product> daftarProduk = [
     stock: 0,
     description: 'Keyboard mekanik 87 key, switch biru, hot-swappable.',
   ),
+
   Product(
     id: 'P005',
     name: 'Hoodie Fleece Unisex',
@@ -332,6 +375,7 @@ final List<Product> daftarProduk = [
     stock: 9,
     description: 'Hoodie bahan fleece tebal, tersedia ukuran M sampai XXL.',
   ),
+
   Product(
     id: 'P006',
     name: 'Tote Bag Kanvas',
@@ -340,6 +384,7 @@ final List<Product> daftarProduk = [
     category: 'Fashion',
     stock: 20,
   ),
+
   Product(
     id: 'P007',
     name: 'Kopi Arabika Gayo 250g',
@@ -349,6 +394,7 @@ final List<Product> daftarProduk = [
     stock: 4,
     description: 'Biji kopi arabika Gayo single origin, medium roast.',
   ),
+
   Product(
     id: 'P008',
     name: 'Keripik Singkong Pedas',
@@ -358,17 +404,82 @@ final List<Product> daftarProduk = [
     stock: 35,
     description: 'Keripik singkong level pedas 3, kemasan 200 gram.',
   ),
+
+  Product(
+    id: 'P009',
+    name: 'Smartwatch Sport',
+    price: 350000,
+    imageUrl: 'assets/images/smartwatch.jpg',
+    category: 'Elektronik',
+    stock: 6,
+  ),
+
+  Product(
+    id: 'P010',
+    name: 'Celana Jeans Slim Fit',
+    price: 225000,
+    imageUrl: 'assets/images/jeans.jpg',
+    category: 'Fashion',
+    stock: 10,
+  ),
+
+  Product(
+    id: 'P011',
+    name: 'Teh Hijau Premium',
+    price: 45000,
+    imageUrl: 'assets/images/teh.jpg',
+    category: 'Makanan',
+    stock: 18,
+  ),
+
+  Product(
+    id: 'P012',
+    name: 'Power Bank 10000mAh',
+    price: 175000,
+    imageUrl: 'assets/images/powerbank.jpg',
+    category: 'Elektronik',
+    stock: 2,
+  ),
+
+  Product(
+    id: 'P013',
+    name: 'Topi Baseball',
+    price: 85000,
+    imageUrl: 'assets/images/topi.jpg',
+    category: 'Fashion',
+    stock: 14,
+  ),
+
+  Product(
+    id: 'P014',
+    name: 'Cokelat Batang',
+    price: 30000,
+    imageUrl: 'assets/images/cokelat.jpg',
+    category: 'Makanan',
+    stock: 25,
+  ),
+
+  Product(
+    id: 'P015',
+    name: 'Speaker Bluetooth Mini',
+    price: 210000,
+    imageUrl: 'assets/images/speaker.jpg',
+    category: 'Elektronik',
+    stock: 5,
+  ),
 ];
 
 double hitungTotalBelanja(List<Product> keranjang) {
   double total = 0;
+
   for (Product p in keranjang) {
     total += p.price;
   }
+
   return total;
 }
 
-//status stock
+// Status stock
 void demoTugasMandiri1() {
   final contoh1 = Product(
     id: 'X1',
@@ -378,6 +489,7 @@ void demoTugasMandiri1() {
     category: 'Fashion',
     stock: 0,
   );
+
   final contoh2 = Product(
     id: 'X2',
     name: 'Contoh Stok Terbatas',
@@ -386,6 +498,7 @@ void demoTugasMandiri1() {
     category: 'Fashion',
     stock: 3,
   );
+
   final contoh3 = Product(
     id: 'X3',
     name: 'Contoh Stok Tersedia',
@@ -396,14 +509,20 @@ void demoTugasMandiri1() {
   );
 
   print(
-    '${contoh1.name} (stock=${contoh1.stock}) -> getStatusStok() = ${contoh1.getStatusStok()}',
+    '${contoh1.name} (stock=${contoh1.stock}) '
+    '-> getStatusStok() = ${contoh1.getStatusStok()}',
   );
+
   print(
-    '${contoh2.name} (stock=${contoh2.stock}) -> getStatusStok() = ${contoh2.getStatusStok()}',
+    '${contoh2.name} (stock=${contoh2.stock}) '
+    '-> getStatusStok() = ${contoh2.getStatusStok()}',
   );
+
   print(
-    '${contoh3.name} (stock=${contoh3.stock}) -> getStatusStok() = ${contoh3.getStatusStok()}',
+    '${contoh3.name} (stock=${contoh3.stock}) '
+    '-> getStatusStok() = ${contoh3.getStatusStok()}',
   );
+
   print('\n');
 }
 
@@ -413,21 +532,33 @@ void demoTugasMandiri2() {
 
   for (Product p in daftarProduk) {
     print(
-      '${p.id} | ${p.name.padRight(24)} | ${p.hargaFormatted.padLeft(12)} '
-      '| stok ${p.stock.toString().padLeft(2)} | ${p.getStatusStok()}',
+      '${p.id} | '
+      '${p.name.padRight(24)} | '
+      '${p.hargaFormatted.padLeft(12)} '
+      '| stok ${p.stock.toString().padLeft(2)} '
+      '| ${p.getStatusStok()}',
     );
   }
+
   print('\n');
 }
 
 void demoTugasMandiri3() {
   List<Product> keranjang = [daftarProduk[0], daftarProduk[2], daftarProduk[7]];
+
   print('-- Isi keranjang --');
+
   for (Product p in keranjang) {
     print('- ${p.name} : ${p.hargaFormatted}');
   }
+
   double total = hitungTotalBelanja(keranjang);
-  print('\nTotal belanja (hitungTotalBelanja) : ${formatRupiah(total)}');
+
+  print(
+    '\nTotal belanja (hitungTotalBelanja) : '
+    '${formatRupiah(total)}',
+  );
+
   print('\n');
 }
 
