@@ -14,7 +14,6 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Header menggunakan Row dan Column
           Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
@@ -53,6 +52,21 @@ class HomePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ProductCard(
                   product: daftarProduk[index],
+                  onTap: () async {
+                    final hasil = await Navigator.pushNamed(
+                    context,
+                    '/detail',
+                    arguments: daftarProduk[index],
+                  );
+
+                  if (hasil != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Jumlah barang: $hasil'),
+                        ),
+                      );
+                    }
+                  },
                 );
               },
             ),
