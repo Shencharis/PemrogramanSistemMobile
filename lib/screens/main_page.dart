@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../controllers/cart_controller.dart';
 import 'home_page.dart';
+import 'cart_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -9,23 +13,20 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _selectedIndex = 0;
+  final CartController cartController = Get.find<CartController>();
 
-  final List<Widget> _pages = [
-    const HomePage(),
-    const Center(
-      child: Text('Keranjang'),
-    ),
-    const Center(
-      child: Text('Profil'),
-    ),
-  ];
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_selectedIndex],
+    final List<Widget> pages = [
+      const HomePage(),
+      const CartPage(),
+      const Center(child: Text('Profil')),
+    ];
 
+    return Scaffold(
+      body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -33,16 +34,22 @@ class _MainPageState extends State<MainPage> {
             _selectedIndex = index;
           });
         },
-        items: const [
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Beranda',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
+            icon: Obx(
+              () => Badge(
+                label: Text(cartController.totalItem.toString()),
+                isLabelVisible: cartController.totalItem > 0,
+                child: const Icon(Icons.shopping_cart),
+              ),
+            ),
             label: 'Keranjang',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profil',
           ),

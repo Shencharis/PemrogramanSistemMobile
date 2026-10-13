@@ -1,4 +1,8 @@
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../controllers/cart_controller.dart';
 import '../models/product.dart';
 import '../widgets/product_card.dart';
 
@@ -7,6 +11,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CartController cartController = Get.find<CartController>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('TokoKita'),
@@ -32,40 +38,36 @@ class HomePage extends StatelessWidget {
                     SizedBox(height: 4),
                     Text(
                       'Belanja jadi lebih mudah',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
+                      style: TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
-                const Icon(
-                  Icons.shopping_cart,
-                  size: 30,
+                Obx(
+                  () => Badge(
+                    label: Text(
+                      cartController.totalItem.toString(),
+                    ),
+                    isLabelVisible: cartController.totalItem > 0,
+                    child: const Icon(
+                      Icons.shopping_cart,
+                      size: 30,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-
           Expanded(
             child: ListView.builder(
               itemCount: daftarProduk.length,
               itemBuilder: (context, index) {
                 return ProductCard(
                   product: daftarProduk[index],
-                  onTap: () async {
-                    final hasil = await Navigator.pushNamed(
-                    context,
-                    '/detail',
-                    arguments: daftarProduk[index],
-                  );
-
-                  if (hasil != null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Jumlah barang: $hasil'),
-                        ),
-                      );
-                    }
+                  onTap: () {
+                    Get.toNamed(
+                      '/detail',
+                      arguments: daftarProduk[index],
+                    );
                   },
                 );
               },

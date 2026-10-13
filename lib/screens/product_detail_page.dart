@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../controllers/cart_controller.dart';
 import '../models/product.dart';
 import '../widgets/price_label.dart';
 import '../widgets/stock_bagde.dart';
@@ -20,16 +23,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
+    final CartController cartController = Get.find<CartController>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Detail Produk'), centerTitle: true),
-
+      appBar: AppBar(
+        title: const Text('Detail Produk'),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Gambar produk
             Container(
               width: double.infinity,
               height: 220,
@@ -43,38 +48,33 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 color: Colors.grey,
               ),
             ),
-
             const SizedBox(height: 20),
 
-            // Kategori
             CategoryTag(kategori: product.category),
-
             const SizedBox(height: 10),
 
-            // Nama produk
             Text(
               product.name,
-              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-
             const SizedBox(height: 10),
 
-            // Harga
             PriceLabel(harga: product.price),
-
             const SizedBox(height: 10),
 
-            // Stok
             StockBadge(status: product.getStatusStok()),
-
             const SizedBox(height: 24),
 
-            // Deskripsi
             const Text(
               'Deskripsi Produk',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-
             const SizedBox(height: 8),
 
             Text(
@@ -85,20 +85,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 color: Colors.grey,
               ),
             ),
-
             const SizedBox(height: 24),
 
-            // Jumlah
             const Text(
               'Jumlah',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-
             const SizedBox(height: 10),
 
             Row(
               children: [
-                // Tombol kurang
                 IconButton(
                   onPressed: jumlah > 1
                       ? () {
@@ -109,8 +108,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       : null,
                   icon: const Icon(Icons.remove),
                 ),
-
-                // Jumlah
                 Container(
                   width: 50,
                   alignment: Alignment.center,
@@ -122,8 +119,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                   ),
                 ),
-
-                // Tombol tambah
                 IconButton(
                   onPressed: jumlah < product.stock
                       ? () {
@@ -136,14 +131,35 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 ),
               ],
             ),
-
             const SizedBox(height: 30),
 
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.pop(context, jumlah);
+                  for (int i = 0; i < jumlah; i++) {
+                    cartController.addToCart(product);
+                  }
+
+                  Get.back();
+
+                  Get.snackbar(
+                    'Berhasil',
+                    '$jumlah ${product.name} ditambahkan ke keranjang',
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                },
+                icon: const Icon(Icons.add_shopping_cart),
+                label: const Text('Tambah ke Keranjang'),
+              ),
+            ),
+            const SizedBox(height: 10),
+
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  Get.back();
                 },
                 icon: const Icon(Icons.arrow_back),
                 label: const Text('Kembali'),
